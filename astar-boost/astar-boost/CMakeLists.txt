@@ -10,3 +10,8 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 # TODO: Add tests and install targets if needed.
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+find_package(Boost 1.74.0 COMPONENTS filesystem graph REQUIRED)  
+include_directories ( ${Boost_INCLUDE_DIR} )
