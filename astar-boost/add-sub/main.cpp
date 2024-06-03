@@ -1,11 +1,13 @@
 #include "add-sub.h"
 
 #include <iostream>
+#include <string>
 
 int main(int argc, char const* argv[]) {
     int a = add(1, 2);
     int b = sub(2, 1);
 
+    std::cout << "hello world " << std::endl;
     std::cout << "1+2 => " << a << std::endl;
     std::cout << "2-1 => " << b << std::endl;
 
