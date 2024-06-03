@@ -9,6 +9,16 @@
 
 #include <iostream>
 
+#ifdef EMSCRIPTEN
+// quick_example.cpp
+#include <emscripten/emscripten.h>
+#include <emscripten/bind.h>
+
+using namespace emscripten;
+#endif
+
+#ifndef EMSCRIPTEN
+
 //https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
 int main(int argc, char const* argv[]) {
@@ -31,5 +41,18 @@ int main(int argc, char const* argv[]) {
     else
         std::cout << "The maze is not solvable." << std::endl;
     std::cout << m << std::endl;
+
+    std::cout << "zz: " << zz(1, 2, 3) << std::endl;
     return 0;
 }
+
+#endif
+
+//https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
+
+#ifdef EMSCRIPTEN
+
+EMSCRIPTEN_BINDINGS(zz) {
+    function("zz", &zz);
+}
+#endif

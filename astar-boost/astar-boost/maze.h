@@ -9,7 +9,6 @@
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 
-
 // A searchable maze
 //
 // The maze is grid of locations which can either be empty or contain a
@@ -79,3 +78,5 @@ private:
 };
 
 maze random_maze(std::size_t x, std::size_t y);
+
+float zz(float a, float b, float t);
