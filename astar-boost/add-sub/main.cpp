@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-int main(int argc, char const* argv[]) {
+int main(int, char const**) {
     int a = add(1, 2);
     int b = sub(2, 1);
 

@@ -7,9 +7,12 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include <iostream>
+
 //https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
 int main(int argc, char const* argv[]) {
+
     // The default maze size is 20x10.  A different size may be specified on
     // the command line.
     std::size_t x = 20;
