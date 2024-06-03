@@ -3,15 +3,16 @@
 #
 
 # Add source to this project's executable.
-add_executable (astar-boost "astar-boost.cpp" "astar-boost.h" "maze.h" "maze.cpp" "euclidean_heuristic.h" "astar_goal_visitor.h" "astar_definitions.h" "random_num_utils.h" "random_num_utils.cpp")
+add_executable (astar-boost-exe "astar-boost.cpp" "astar-boost.h" "astar-boost.h" "maze.h" "maze.cpp" "euclidean_heuristic.h" "astar_goal_visitor.h" "astar_definitions.h" "random_num_utils.h" "random_num_utils.cpp")
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET astar-boost PROPERTY CXX_STANDARD 20)
-endif()
+include_directories(SYSTEM "/usr/include/boost")
+
+#set(CMAKE_TOOLCHAIN_FILE "/home/tim/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" CACHE STRING "")
 
 # TODO: Add tests and install targets if needed.
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
-find_package(Boost 1.74.0 COMPONENTS graph REQUIRED)  
-include_directories ( ${Boost_INCLUDE_DIR} )
+set(Boost_INCLUDE_DIR /usr/include)
+
+find_package(Boost 1.74.0 COMPONENTS graph REQUIRED)
