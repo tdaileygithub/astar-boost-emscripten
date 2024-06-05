@@ -33,18 +33,17 @@ else()
 endif()
 
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
-    #set(CMAKE_TOOLCHAIN_FILE "/home/tim/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" )
-    #set(USE_FLAGS "-s USE_BOOST_HEADERS=1 -s DISABLE_EXCEPTION_CATCHING=0 -s USE_SDL=2 --bind")
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
-    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
-    #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${USE_FLAGS}")
-    #set(CMAKE_EXECUTABLE_SUFFIX .html)
+    set(CMAKE_TOOLCHAIN_FILE "/home/tim/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" )
+    set(USE_FLAGS "-s USE_BOOST_HEADERS=1 -s DISABLE_EXCEPTION_CATCHING=0 -s USE_SDL=2 --bind")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${USE_FLAGS}")
+    set(CMAKE_EXECUTABLE_SUFFIX .html)
 else()
     find_package(SDL2 REQUIRED)
     find_package(Boost REQUIRED)
 endif()
 
-include_directories(astar-boost-exe ${SDL2_INCLUDE_DIRS})
 set(HEADER_FILES 
     "add-sub.h"
 )
@@ -55,6 +54,7 @@ set(SOURCE_FILES
 )
 
 # Add source to this project's executable.
+include_directories(add-sub-exe ${SDL2_INCLUDE_DIRS})
 add_executable (add-sub-exe ${SOURCE_FILES} ${HEADER_FILES} )
 target_link_libraries(add-sub-exe ${SDL2_LIBRARIES})
 
