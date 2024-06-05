@@ -2,16 +2,25 @@
 
 #include "SDL.h"
 
+#include <boost/unordered_set.hpp>
+
+#include <iostream>
+#include <string>
+
+unsigned char* byteBuffer = new unsigned char[1024]();
+size_t bufferLength = 1024;
+
 #ifdef EMSCRIPTEN
 // https://www.jamesfmackenzie.com/2019/12/01/webassembly-graphics-with-sdl/
 // https://terminalroot.com/how-to-transform-your-games-into-c-cpp-for-the-web-with-emscripten-sdl2/
 #include <emscripten/emscripten.h>
 #include <emscripten/bind.h>
 using namespace emscripten;
-#endif
 
-#include <iostream>
-#include <string>
+val getBytes() {
+	return val(typed_memory_view(bufferLength, byteBuffer));
+}
+#endif
 
 struct Context {
 	std::string title;
@@ -25,6 +34,8 @@ struct Context {
 
 void callback(void* arg) {
 	Context* context = static_cast<Context*>(arg);
+
+	uint32_t ticksNow = SDL_GetTicks();
 
 	while (SDL_PollEvent(&context->event)) {
 		if (context->event.type == SDL_QUIT) {
@@ -61,6 +72,10 @@ void callback(void* arg) {
 
 int main(int argc, char* argv[])
 {
+	byteBuffer[0] = 'A';
+	byteBuffer[1] = 'B';
+	byteBuffer[2] = 'C';
+
 	Context context;
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -82,7 +97,7 @@ int main(int argc, char* argv[])
 	
 	context.surface = SDL_CreateRGBSurface(0, context.width, context.height, 32, 0, 0, 0, 0);
 
-#ifdef EMSCRIPTEN	
+#ifdef __EMSCRIPTEN__
 	emscripten_set_main_loop_arg(callback, &context, -1, 1);
 #else
 	while (1) {
@@ -100,3 +115,9 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
+
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_BINDINGS(memory_view_example) {
+	function("getBytes", &getBytes);
+}
+#endif
