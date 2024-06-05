@@ -4,6 +4,7 @@
 
 #ifdef EMSCRIPTEN
 // https://www.jamesfmackenzie.com/2019/12/01/webassembly-graphics-with-sdl/
+// https://terminalroot.com/how-to-transform-your-games-into-c-cpp-for-the-web-with-emscripten-sdl2/
 #include <emscripten/emscripten.h>
 #include <emscripten/bind.h>
 using namespace emscripten;
@@ -13,43 +14,80 @@ using namespace emscripten;
 #include <iostream>
 #include <string>
 
-SDL_Window* window;
-SDL_Renderer* renderer;
-SDL_Surface* surface;
+struct Context {
+	std::string title;
+	int width, height;
+	SDL_Renderer* renderer;
+	SDL_Event event;
+	SDL_Rect rect, rect2;
+	SDL_Texture* logo;
+	SDL_Surface* surface;
+	SDL_Window* window;
+};
 
-void drawRandomPixels() {
-	if (SDL_MUSTLOCK(surface)) SDL_LockSurface(surface);
+void callback(void* arg) {
+	Context* context = static_cast<Context*>(arg);
 
-	Uint8* pixels = (Uint8 *)surface->pixels;
+	while (SDL_PollEvent(&context->event)) {
+		if (context->event.type == SDL_QUIT) {
+			exit(0);
+		}
+		else if (context->event.type == SDL_MOUSEBUTTONDOWN) {
+			context->rect2.x -= 20;
+		}
+	}
 
-	for (int i = 0; i < 1048576; i++) {
+	if (SDL_MUSTLOCK(context->surface)) SDL_LockSurface(context->surface);
+
+	Uint8* pixels = (Uint8*)(context->surface->pixels);
+
+	//1048576
+	constexpr int num_pix = 512 * 512 * 4;
+	for (int i = 0; i < num_pix; i++) {
 		char randomByte = rand() % 255;
 		pixels[i] = randomByte;
 	}
 
-	if (SDL_MUSTLOCK(surface)) SDL_UnlockSurface(surface);
+	if (SDL_MUSTLOCK(context->surface)) SDL_UnlockSurface(context->surface);
 
-	SDL_Texture* screenTexture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_Texture* screenTexture = SDL_CreateTextureFromSurface(context->renderer, context->surface);
 
-	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, screenTexture, NULL, NULL);
-	SDL_RenderPresent(renderer);
+	SDL_RenderClear(context->renderer);
+	SDL_RenderCopy(context->renderer, screenTexture, NULL, NULL);
+	SDL_RenderPresent(context->renderer);
 
 	SDL_DestroyTexture(screenTexture);
+
+	//std::cout << "yo" << std::endl;
 }
 
 int main(int argc, char* argv[])
 {
-	SDL_Init(SDL_INIT_VIDEO);
-	SDL_CreateWindowAndRenderer(512, 512, 0, &window, &renderer);
-	surface = SDL_CreateRGBSurface(0, 512, 512, 32, 0, 0, 0, 0);
+	Context context;
+	SDL_Init(SDL_INIT_EVERYTHING);
 
-#ifdef EMSCRIPTEN
-	emscripten_set_main_loop(drawRandomPixels, 0, 1);
+	context.title = "SDL2 It's Works!";
+	context.width = 1280;
+	context.height = 720;
+
+	context.window = SDL_CreateWindow(
+		context.title.c_str(),
+		0, 00,
+		context.width, context.height,
+		SDL_WINDOW_SHOWN
+	);
+
+	SDL_Renderer* renderer = SDL_CreateRenderer(context.window, -1, 0);
+	context.renderer = renderer;
+	
+	context.surface = SDL_CreateRGBSurface(0, 512, 512, 32, 0, 0, 0, 0);
+
+#ifdef EMSCRIPTEN	
+	emscripten_set_main_loop_arg(callback, &context, -1, 1);
 #else
 	while (1) {
-		drawRandomPixels();
-		SDL_Delay(16);
+		callback(&context);
+		SDL_Delay(50);
 	}
 #endif 
 
