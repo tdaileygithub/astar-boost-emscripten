@@ -7,8 +7,8 @@
 #include "maze.h"
 #include "random_num_utils.h"
 
-constexpr int NUM_MAZE_COLS = 20;
-constexpr int NUM_MAZE_ROWS = 20;
+constexpr int NUM_MAZE_COLS = 40;
+constexpr int NUM_MAZE_ROWS = 40;
 constexpr int NUM_BYTES_PIXEL = 4;
 
 constexpr int MAZE_CELL_WIDTH_PIXEL = 20;
@@ -16,8 +16,8 @@ constexpr int MAZE_CELL_HEIGHT_PIXEL = 20;
 
 constexpr int NUM_BYTES_IN_ROW = (NUM_MAZE_COLS* MAZE_CELL_WIDTH_PIXEL* NUM_BYTES_PIXEL);
 
-unsigned char* byteBuffer = new unsigned char[1024]();
-size_t bufferLength = 1024;
+constexpr size_t bufferLength = 1024;
+unsigned char* byteBuffer = new unsigned char[bufferLength]();
 
 #ifdef __EMSCRIPTEN__
 // https://www.jamesfmackenzie.com/2019/12/01/webassembly-graphics-with-sdl/
@@ -81,7 +81,6 @@ struct Context {
 	SDL_Event event;
 	SDL_Surface* surface;
 	SDL_Window* window;
-	maze* maze;
 };
 
 void setPixels(Uint8* pixels, int coln, int coly, PixelRGBA color) 
@@ -108,6 +107,17 @@ void setPixels(Uint8* pixels, int coln, int coly, PixelRGBA color)
 void callback(void* arg) {
 	Context* context = static_cast<Context*>(arg);
 
+	maze m = random_maze(NUM_MAZE_COLS, NUM_MAZE_ROWS);
+	const bool is_solved = m.solve();
+	if (is_solved) {
+		std::cout << "Solved the maze." << std::endl;
+	}
+	else
+	{
+		std::cout << "The maze is not solvable." << std::endl;
+	}
+	std::cout << m << std::endl;
+
 	uint32_t ticksNow = SDL_GetTicks();
 
 	while (SDL_PollEvent(&context->event)) {
@@ -131,18 +141,18 @@ void callback(void* arg) {
 	//	pixels[i] = randomByte;
 	//}	
 
-	//std::cout << context->maze->length(0) << " " << context->maze->length(1) << std::endl;
-
-	for (vertices_size_type x = 0; x < context->maze->length(0); x++) 
+	for (vertices_size_type x = 0; x < m.length(0); x++) 
 	{
-		for (vertices_size_type y = 0; y < context->maze->length(1); y++) 
+		for (vertices_size_type y = 0; y < m.length(1); y++)
 		{
-			//std::cout << x << " " << y << std::endl;
 			// Put the character representing this point in the maze grid.
 			const vertex_descriptor u = { {x, vertices_size_type(y)} };
 
-			const bool is_solution = context->maze->solution_contains(u);
-			const bool is_barrier = context->maze->has_barrier(u);
+			const bool is_solution = m.solution_contains(u);
+			const bool is_barrier = m.has_barrier(u);
+
+			//clear out previous
+			setPixels(pixels, x, y, pixel_black);
 
 			if (is_solution) {
 				setPixels(pixels, x, y, pixel_white);
@@ -160,8 +170,6 @@ void callback(void* arg) {
 		}
 	}
 
-
-
 	if (SDL_MUSTLOCK(context->surface)) SDL_UnlockSurface(context->surface);
 
 	SDL_Texture* screenTexture = SDL_CreateTextureFromSurface(context->renderer, context->surface);
@@ -172,33 +180,22 @@ void callback(void* arg) {
 
 	SDL_DestroyTexture(screenTexture);
 
-	//std::cout << "yo" << std::endl;
+	SDL_Delay(2000);
 }
 
-
-
-#ifndef __EMSCRIPTEN__
+//#ifndef __EMSCRIPTEN__
 
 //https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
 int main(int argc, char* argv[])
 {
 	global_random_generator.seed(std::time(0));
-	maze m = random_maze(NUM_MAZE_COLS, NUM_MAZE_ROWS);
-	const bool is_solved = m.solve();
-
-	if (is_solved)
-	    std::cout << "Solved the maze." << std::endl;
-	else
-	    std::cout << "The maze is not solvable." << std::endl;
-	std::cout << m << std::endl;
 
 	byteBuffer[0] = 'A';
 	byteBuffer[1] = 'B';
 	byteBuffer[2] = 'C';
 
 	Context context;
-	context.maze = &m;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -225,15 +222,11 @@ int main(int argc, char* argv[])
 #else
 	while (1) {
 		callback(&context);
-		SDL_Delay(100);
+		//SDL_Delay(2000);
 	}
 #endif 
 
 	exit(0);
-
-
-
-
 
     //// The default maze size is 20x10.  A different size may be specified on
     //// the command line.
@@ -257,7 +250,7 @@ int main(int argc, char* argv[])
     //return 0;
 }
 
-#endif
+//#endif
 
 //https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
 //https://stackoverflow.com/questions/65566923/is-there-a-more-efficient-way-to-return-arrays-from-c-to-javascript
