@@ -10,17 +10,15 @@
 using namespace emscripten;
 #endif
 
-#include <stdlib.h>
 #include <iostream>
 #include <string>
 
 struct Context {
 	std::string title;
-	int width, height;
+	int width;
+	int height;
 	SDL_Renderer* renderer;
-	SDL_Event event;
-	SDL_Rect rect, rect2;
-	SDL_Texture* logo;
+	SDL_Event event;	
 	SDL_Surface* surface;
 	SDL_Window* window;
 };
@@ -33,7 +31,7 @@ void callback(void* arg) {
 			exit(0);
 		}
 		else if (context->event.type == SDL_MOUSEBUTTONDOWN) {
-			context->rect2.x -= 20;
+			
 		}
 	}
 
@@ -67,20 +65,22 @@ int main(int argc, char* argv[])
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	context.title = "SDL2 It's Works!";
-	context.width = 1280;
-	context.height = 720;
+	context.width = 512;
+	context.height = 512;
 
 	context.window = SDL_CreateWindow(
 		context.title.c_str(),
-		0, 00,
-		context.width, context.height,
+		0, 
+		0,
+		context.width, 
+		context.height,
 		SDL_WINDOW_SHOWN
 	);
 
 	SDL_Renderer* renderer = SDL_CreateRenderer(context.window, -1, 0);
 	context.renderer = renderer;
 	
-	context.surface = SDL_CreateRGBSurface(0, 512, 512, 32, 0, 0, 0, 0);
+	context.surface = SDL_CreateRGBSurface(0, context.width, context.height, 32, 0, 0, 0, 0);
 
 #ifdef EMSCRIPTEN	
 	emscripten_set_main_loop_arg(callback, &context, -1, 1);
