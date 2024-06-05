@@ -40,7 +40,7 @@ void callback(void* arg) {
 	Uint8* pixels = (Uint8*)(context->surface->pixels);
 
 	//1048576
-	constexpr int num_pix = 512 * 512 * 4;
+	const int num_pix = context->width * context->height * 4;
 	for (int i = 0; i < num_pix; i++) {
 		char randomByte = rand() % 255;
 		pixels[i] = randomByte;
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 #else
 	while (1) {
 		callback(&context);
-		SDL_Delay(50);
+		SDL_Delay(100);
 	}
 #endif 
 
