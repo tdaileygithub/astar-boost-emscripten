@@ -1,26 +1,39 @@
 #include "add-sub.h"
 
+#include "SDL.h"
+
 #include <iostream>
 #include <string>
 
-int main(int, char const**) {
-    int a = add(1, 2);
-    int b = sub(2, 1);
+int main(int argc, char* argv[])
+{
+	SDL_Init(SDL_INIT_VIDEO);
 
-    std::cout << "hello world " << std::endl;
-    std::cout << "1+2 => " << a << std::endl;
-    std::cout << "2-1 => " << b << std::endl;
+	SDL_Window* window = SDL_CreateWindow(
+		"SDL2Test",
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		640,
+		480,
+		0
+	);
 
-    if (a != 3)
-    {
-        std::cerr << "Invalid add" << std::endl;
-        return -1;
-    }
-    if (b != 1)
-    {
-        std::cerr << "Invalid sub" << std::endl;
-        return -1;
-    }
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
 
-    return 0;
+	SDL_Delay(3000);
+
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+
+	int a = add(1, 2);
+	int b = sub(2, 1);
+
+	std::cout << "hello world " << std::endl;
+	std::cout << "1+2 => " << a << std::endl;
+	std::cout << "2-1 => " << b << std::endl;
+
+	return 0;
 }

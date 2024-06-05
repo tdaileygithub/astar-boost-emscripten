@@ -17,6 +17,7 @@
         "rhs": "Windows"
       }
     },
+
     {
       "name": "x64-debug",
       "displayName": "x64 Debug",
@@ -57,6 +58,7 @@
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
+
     {
       "name": "linux-debug",
       "displayName": "Linux Debug",

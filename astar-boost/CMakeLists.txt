@@ -3,6 +3,8 @@
 #
 cmake_minimum_required (VERSION 3.22)
 
+#set (CMAKE_PREFIX_PATH "C:/SDL2-2.30.3")
+
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
@@ -12,10 +14,9 @@ endif()
 project ("astar-boost")
 project ("add-sub")
 
-add_definitions(-std=c++20)
-set (CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-
+#add_definitions(-std=c++20)
+#set (CMAKE_CXX_STANDARD 20)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 # Include sub-projects.
 add_subdirectory ("astar-boost")
