@@ -1,9 +1,4 @@
-﻿# CMakeList.txt : Top-level CMake project file, do global configuration
-# and include sub-projects here.
-#
-cmake_minimum_required (VERSION 3.22)
-
-#set (CMAKE_PREFIX_PATH "C:/SDL2-2.30.3")
+﻿cmake_minimum_required (VERSION 3.22)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -14,11 +9,6 @@ endif()
 project ("astar-boost")
 project ("add-sub")
 
-#add_definitions(-std=c++20)
-#set (CMAKE_CXX_STANDARD 20)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-
-# Include sub-projects.
 add_subdirectory ("astar-boost")
 
 add_subdirectory ("add-sub")

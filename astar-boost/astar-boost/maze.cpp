@@ -117,7 +117,3 @@ maze random_maze(std::size_t x, std::size_t y) {
     }
     return m;
 }
-
-float zz(float a, float b, float t) {
-    return (1 - t) * a + t * b;
-}
