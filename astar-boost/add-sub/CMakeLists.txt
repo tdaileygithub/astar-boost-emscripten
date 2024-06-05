@@ -1,14 +1,6 @@
-﻿# CMakeList.txt : CMake project for astar-boost, include source and define
-# project specific logic here.
-#
-
-# https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
-#  emcc --show-ports
-
-set(Boost_USE_STATIC_LIBS ON) 
+﻿set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED OFF)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
-#set(Boost_INCLUDE_DIR /usr/include)
 
 if (${CMAKE_HOST_SYSTEM_NAME} MATCHES "Windows")
 
@@ -34,8 +26,10 @@ endif()
 
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(CMAKE_TOOLCHAIN_FILE "/home/tim/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" )
-    #https://emscripten.org/docs/porting/Debugging.html
-
+    #
+    # https://emscripten.org/docs/porting/Debugging.html
+    # https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
+    #  emcc --show-ports
     set(USE_FLAGS "-s USE_BOOST_HEADERS=1 -s DISABLE_EXCEPTION_CATCHING=0 -s USE_SDL=2 -s USE_SDL_GFX=2 --bind")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
@@ -55,8 +49,6 @@ set(SOURCE_FILES
     "add-sub.cpp"
 )
 
-# Add source to this project's executable.
-include_directories(add-sub-exe ${SDL2_INCLUDE_DIRS})
+include_directories(add-sub-exe ${SDL2_INCLUDE_DIRS} ${BOOST_INCLUDE_DIR})
 add_executable (add-sub-exe ${SOURCE_FILES} ${HEADER_FILES} )
 target_link_libraries(add-sub-exe ${SDL2_LIBRARIES})
-

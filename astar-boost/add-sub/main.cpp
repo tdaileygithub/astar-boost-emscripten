@@ -1,11 +1,9 @@
+#include <iostream>
+#include <string>
+
 #include "add-sub.h"
 
 #include "SDL.h"
-
-#include <boost/unordered_set.hpp>
-
-#include <iostream>
-#include <string>
 
 unsigned char* byteBuffer = new unsigned char[1024]();
 size_t bufferLength = 1024;
