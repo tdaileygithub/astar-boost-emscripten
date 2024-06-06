@@ -2,7 +2,7 @@
 
 # astar maze solver with boost
 
-https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
+- https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
 ```
 //          Copyright W.P. McNeill 2010.
@@ -35,7 +35,7 @@ Build and Tested with Cmake from Visual Studio
 - Ubuntu WSL - emscripten targets builds here
 - Windows - build and debug the application from vs and switch to emscripten after getting it working
 
-https://emscripten.org/docs/getting_started/downloads.html
+- https://emscripten.org/docs/getting_started/downloads.html
 
 ```
 apt install cmake g++ build-essential
@@ -46,8 +46,8 @@ Visual studio 2022 using cmake is very easy to jump between windows sdl developm
 
 # Emscripten + Embind
 
-https://web.dev/articles/drawing-to-canvas-in-emscripten
-https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
+- https://web.dev/articles/drawing-to-canvas-in-emscripten
+- https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
 
 # Calling C++ Functions from JS 
 
@@ -115,8 +115,8 @@ EMSCRIPTEN_BINDINGS(memory_view_example) {
 
 # CMake Emscripten setup
 
-https://emscripten.org/docs/porting/Debugging.html
-https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
+- https://emscripten.org/docs/porting/Debugging.html
+- https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
 
 *Note:* I hardcoded Emscripten.cmake path.  There is certainly a proper way to do find it or set a env var.
 
