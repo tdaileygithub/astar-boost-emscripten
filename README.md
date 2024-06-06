@@ -5,10 +5,11 @@ Uses Boost Graph + SDL.
 
 ![screenshot](images/maze_solved.png)
 
-# Run the WASM
+# How to Deploy WASM
 
 Using IIS default is the quickest.  But nginx+apache work fine too with tweaks needed for mime types.
-Just copy these 3 files [or build them yourself] to /.
+
+Just copy these 3 files [or build them yourself] to wwwroot
 
 - astar-boost-exe.js
 - astar-boost-exe.wasm
