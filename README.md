@@ -5,6 +5,15 @@ Uses Boost Graph + SDL.
 
 ![screenshot](images/maze_solved.png)
 
+# Run the WASM
+
+Using IIS default is the quickest.  But nginx+apache work fine too with tweaks needed for mime types.
+Just copy these 3 files [or build them yourself] to /.
+
+- astar-boost-exe.js
+- astar-boost-exe.wasm
+- index.html
+
 # astar maze solver with boost
 
 - https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
