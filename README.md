@@ -81,7 +81,7 @@ EMSCRIPTEN_BINDINGS(memory_view_example) {
 </script>
 ```
 
-# Reading Byte Array from C++ from JS
+# Reading C++ Global Byte Array from JS
 
 ```c++
 constexpr size_t bufferLength = 1024;
@@ -111,4 +111,29 @@ EMSCRIPTEN_BINDINGS(memory_view_example) {
 	}
   };
 </script>
+```
+
+# CMake Emscripten setup
+
+https://emscripten.org/docs/porting/Debugging.html
+https://emscripten.org/docs/compiling/Building-Projects.html#emscripten-ports
+
+*Note:* I hardcoded Emscripten.cmake path.  There is certainly a proper way to do find it or set a env var.
+
+```bash
+emcc --show-ports
+```
+
+```cmake
+if( ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+    set(CMAKE_TOOLCHAIN_FILE "/home/tim/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake" )
+    set(USE_FLAGS "-s USE_BOOST_HEADERS=1 -s DISABLE_EXCEPTION_CATCHING=0 -s USE_SDL=2 -s USE_SDL_GFX=2 --bind")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${USE_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${USE_FLAGS}")
+    set(CMAKE_EXECUTABLE_SUFFIX .html)
+else()
+    find_package(SDL2 REQUIRED)
+    find_package(Boost REQUIRED)
+endif()
 ```
