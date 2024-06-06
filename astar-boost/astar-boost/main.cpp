@@ -7,6 +7,8 @@
 #include "maze.h"
 #include "random_num_utils.h"
 
+constexpr int SDL_DELAY_MS = 100;
+
 constexpr int NUM_MAZE_COLS = 40;
 constexpr int NUM_MAZE_ROWS = 40;
 constexpr int NUM_BYTES_PIXEL = 4;
@@ -125,10 +127,7 @@ void setPixels(Uint8* pixels, int coln, int coly, PixelRGBA color)
 void callback(void* arg) {
 	Context* context = static_cast<Context*>(arg);
 
-	//m.reset();
-	//m = random_maze(NUM_MAZE_COLS, NUM_MAZE_ROWS);
-
-	uint32_t ticksNow = SDL_GetTicks();
+	const uint32_t ticksNow = SDL_GetTicks();
 
 	while (SDL_PollEvent(&context->event))
 	{
@@ -196,10 +195,8 @@ void callback(void* arg) {
 
 	SDL_DestroyTexture(screenTexture);
 
-	SDL_Delay(2000);
+	SDL_Delay(SDL_DELAY_MS);
 }
-
-//#ifndef __EMSCRIPTEN__
 
 //https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
@@ -208,6 +205,17 @@ int main(int argc, char* argv[])
 	global_random_generator.seed(std::time(0));
 
 	m = random_maze(NUM_MAZE_COLS, NUM_MAZE_ROWS);
+
+	const bool is_solved = m->solve();
+	if (is_solved)
+	{
+		std::cout << "Solved the maze." << std::endl;
+	}
+	else
+	{
+		std::cout << "The maze is not solvable." << std::endl;
+	}
+	std::cout << *m << std::endl;
 
 	byteBuffer[0] = 'A';
 	byteBuffer[1] = 'B';
@@ -246,11 +254,6 @@ int main(int argc, char* argv[])
 
 	exit(0);
 }
-
-//#endif
-
-//https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
-//https://stackoverflow.com/questions/65566923/is-there-a-more-efficient-way-to-return-arrays-from-c-to-javascript
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_BINDINGS(memory_view_example) {
