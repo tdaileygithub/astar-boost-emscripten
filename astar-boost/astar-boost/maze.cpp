@@ -85,35 +85,38 @@ std::ostream& operator<<(std::ostream& output, const maze& m) {
 }
 
 // Generate a maze with a random assignment of barriers.
-maze random_maze(std::size_t x, std::size_t y) {
-    maze m(x, y);
-    vertices_size_type n = num_vertices(m.m_grid);
-    vertex_descriptor s = m.source();
-    vertex_descriptor g = m.goal();
+std::unique_ptr<maze> random_maze(std::size_t x, std::size_t y) {
+    //maze m(x, y);
+    maze* mz = new maze(x, y);
+
+    vertices_size_type n = num_vertices(mz->m_grid);
+    vertex_descriptor s = mz->source();
+    vertex_descriptor g = mz->goal();
     // One quarter of the cells in the maze should be barriers.
     int barriers = n / 4;
     while (barriers > 0) {
         // Choose horizontal or vertical direction.
         std::size_t direction = random_int(0, 1);
         // Walls range up to one quarter the dimension length in this direction.
-        vertices_size_type wall = random_int(1, m.length(direction) / 4);
+        vertices_size_type wall = random_int(1, mz->length(direction) / 4);
         // Create the wall while decrementing the total barrier count.
-        vertex_descriptor u = vertex(random_int(0, n - 1), m.m_grid);
+        vertex_descriptor u = vertex(random_int(0, n - 1), mz->m_grid);
         while (wall) {
             // Start and goal spaces should never be barriers.
             if (u != s && u != g) {
                 wall--;
-                if (!m.has_barrier(u)) {
-                    m.m_barriers.insert(u);
+                if (!mz->has_barrier(u)) {
+                    mz->m_barriers.insert(u);
                     barriers--;
                 }
             }
-            vertex_descriptor v = m.m_grid.next(u, direction);
+            vertex_descriptor v = mz->m_grid.next(u, direction);
             // Stop creating this wall if we reached the maze's edge.
             if (u == v)
                 break;
             u = v;
         }
     }
-    return m;
+    //return m;
+    return std::unique_ptr<maze>(mz);
 }

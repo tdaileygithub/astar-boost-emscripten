@@ -9,6 +9,8 @@
 #include <boost/unordered_map.hpp>
 #include <boost/unordered_set.hpp>
 
+#include <memory>
+
 // A searchable maze
 //
 // The maze is grid of locations which can either be empty or contain a
@@ -27,7 +29,7 @@
 class maze {
 public:
 	friend std::ostream& operator<<(std::ostream&, const maze&);
-	friend maze random_maze(std::size_t, std::size_t);
+	friend std::unique_ptr<maze> random_maze(std::size_t, std::size_t);
 
 	maze() :m_grid(create_grid(0, 0)), m_barrier_grid(create_barrier_grid()) {};
 	maze(std::size_t x, std::size_t y) :m_grid(create_grid(x, y)),
@@ -52,7 +54,11 @@ public:
 	bool solution_contains(vertex_descriptor u) const {
 		return m_solution.find(u) != m_solution.end();
 	}
+	// The grid underlying the maze
+	grid m_grid;
 
+	// The barriers in the maze
+	vertex_set m_barriers;
 private:
 	// Create the underlying rank-2 grid with the specified dimensions.
 	grid create_grid(std::size_t x, std::size_t y) {
@@ -65,16 +71,14 @@ private:
 		return boost::make_vertex_subset_complement_filter(m_grid, m_barriers);
 	}
 
-	// The grid underlying the maze
-	grid m_grid;
+
 	// The underlying maze grid with barrier vertices filtered out
 	filtered_grid m_barrier_grid;
-	// The barriers in the maze
-	vertex_set m_barriers;
+
 	// The vertices on a solution path through the maze
 	vertex_set m_solution;
 	// The length of the solution path
 	distance m_solution_length;
 };
 
-maze random_maze(std::size_t x, std::size_t y);
+std::unique_ptr<maze> random_maze(std::size_t x, std::size_t y);
