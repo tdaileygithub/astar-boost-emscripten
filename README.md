@@ -18,6 +18,7 @@ Visual studio 2022 using cmake is very easy to jump between windows sdl developm
 
 https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
+```
 //          Copyright W.P. McNeill 2010.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
@@ -39,7 +40,7 @@ https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 //
 // The default maze size is 20x10, though different dimensions may be
 // specified on the command line.
-
+```
 
 # Emscripten + Embind
 
@@ -48,7 +49,7 @@ https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#bu
 
 # Calling C++ Functions from Javascript + Reading a Byte Array from C++ in Javascript
 
-```
+```c++
 constexpr size_t bufferLength = 1024;
 unsigned char* byteBuffer = new unsigned char[bufferLength]();
 
@@ -69,7 +70,7 @@ EMSCRIPTEN_BINDINGS(memory_view_example) {
 #endif
 ```
 
-```
+```JavaScript
 <script type="text/javascript">
   var Module = {
 	onRuntimeInitialized: function() {
