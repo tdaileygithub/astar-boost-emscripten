@@ -1,3 +1,8 @@
+# astar maze solver with boost + sdl
+
+Runs on windows,linux, and in browser via WASM via emscripten.  
+Uses Boost Graph + SDL.
+
 ![screenshot](images/maze_solved.png)
 
 # astar maze solver with boost
