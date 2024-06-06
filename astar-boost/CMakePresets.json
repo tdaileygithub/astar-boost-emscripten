@@ -85,6 +85,31 @@
           }
         ]
       }
+    },
+    {
+      "name": "emscripten-linux-release",
+      "displayName": "Emscripten Linux Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "/home/tim/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+      },
+      "condition": {
+        "type": "allOf",
+        "conditions": [
+          {
+            "type": "const",
+            "value": true
+          },
+          {
+            "type": "equals",
+            "lhs": "${hostSystemName}",
+            "rhs": "Linux"
+          }
+        ]
+      }
     }
   ]
 }
