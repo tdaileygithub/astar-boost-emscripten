@@ -149,13 +149,13 @@ canvas.emscripten { border: 0px none; background-color: black; }
 	<script type="text/javascript">
 	  var Module = {
 		onRuntimeInitialized: function() {
-		  
+		  var myUint8Array = Module.getBytes();
+		  console.log(myUint8Array);		
 		}
 	  };
 	  function clickMe() {
 		Module.resetMaze(); 
-	  }  
-	  
+	  }
 	</script>
 
     <script type='text/javascript'>
@@ -164,13 +164,6 @@ canvas.emscripten { border: 0px none; background-color: black; }
       var spinnerElement = document.getElementById('spinner');
 
       var Module = {
-		onRuntimeInitialized: function() {
-		  //Module._foobar(); // foobar was exported
-		  console.log('zzzz');
-		  var myUint8Array = Module.getBytes();
-		  console.log(myUint8Array);
-		},	  
-	  
         print: (function() {
 		
           var element = document.getElementById('output');

@@ -1,11 +1,20 @@
-# requirements
+# Build Requirements
+
+Build and Tested with Cmake from Visual Studio
+- VS2022
+- Ubuntu WSL - emscripten targets builds here
+- Windows - build and debug the application from vs and switch to emscripten after getting it working
+
+https://emscripten.org/docs/getting_started/downloads.html
 
 ```
 apt install cmake g++ build-essential
 apt install libboost-dev libsdl2-dev 
 ```
 
-# astar-boost-emscripten
+Visual studio 2022 using cmake is very easy to jump between windows sdl development and emscripten builds.
+
+# astar maze solver with boost and sdl
 
 https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
@@ -36,4 +45,37 @@ https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
 https://web.dev/articles/drawing-to-canvas-in-emscripten
 https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
-https://stackoverflow.com/questions/65566923/is-there-a-more-efficient-way-to-return-arrays-from-c-to-javascript
+
+# Calling C++ Functions from Javascript + Reading a Byte Array from C++ in Javascript
+
+```
+constexpr size_t bufferLength = 1024;
+unsigned char* byteBuffer = new unsigned char[bufferLength]();
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#include <emscripten/bind.h>
+using namespace emscripten;
+
+val getBytes() {};
+void resetMaze() {};
+#endif
+
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_BINDINGS(memory_view_example) {
+	function("getBytes", &getBytes);
+	function("resetMaze", &resetMaze);
+}
+#endif
+```
+
+```
+<script type="text/javascript">
+  var Module = {
+	onRuntimeInitialized: function() {
+	  var myUint8Array = Module.getBytes();
+	  console.log(myUint8Array);		
+	}
+  };
+</script>
+```
