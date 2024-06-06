@@ -49,7 +49,39 @@ Visual studio 2022 using cmake is very easy to jump between windows sdl developm
 https://web.dev/articles/drawing-to-canvas-in-emscripten
 https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
 
-# Calling C++ Functions from JS and Reading Byte Array from C++ from JS
+# Calling C++ Functions from JS 
+
+```c++
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#include <emscripten/bind.h>
+using namespace emscripten;
+
+void resetMaze() {};
+#endif
+
+#ifdef __EMSCRIPTEN__
+EMSCRIPTEN_BINDINGS(memory_view_example) {
+	function("resetMaze", &resetMaze);
+}
+#endif
+```
+
+```HTML
+<div class="col-sm">
+	<button type="button" class="btn btn-primary"  onclick="clickMe();">create new maze</button>      
+</div>
+```
+
+```JavaScript
+<script type="text/javascript">
+  function clickMe() {
+	Module.resetMaze(); 
+  }
+</script>
+```
+
+# Reading Byte Array from C++ from JS
 
 ```c++
 constexpr size_t bufferLength = 1024;
@@ -61,13 +93,11 @@ unsigned char* byteBuffer = new unsigned char[bufferLength]();
 using namespace emscripten;
 
 val getBytes() {};
-void resetMaze() {};
 #endif
 
 #ifdef __EMSCRIPTEN__
 EMSCRIPTEN_BINDINGS(memory_view_example) {
 	function("getBytes", &getBytes);
-	function("resetMaze", &resetMaze);
 }
 #endif
 ```
