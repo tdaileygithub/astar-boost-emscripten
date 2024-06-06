@@ -1,18 +1,4 @@
-# Build Requirements
-
-Build and Tested with Cmake from Visual Studio
-- VS2022
-- Ubuntu WSL - emscripten targets builds here
-- Windows - build and debug the application from vs and switch to emscripten after getting it working
-
-https://emscripten.org/docs/getting_started/downloads.html
-
-```
-apt install cmake g++ build-essential
-apt install libboost-dev libsdl2-dev 
-```
-
-Visual studio 2022 using cmake is very easy to jump between windows sdl development and emscripten builds.
+![screenshot](images/maze_solved.png)
 
 # astar maze solver with boost
 
@@ -41,6 +27,22 @@ https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 // The default maze size is 20x10, though different dimensions may be
 // specified on the command line.
 ```
+
+# Build Requirements
+
+Build and Tested with Cmake from Visual Studio
+- VS2022
+- Ubuntu WSL - emscripten targets builds here
+- Windows - build and debug the application from vs and switch to emscripten after getting it working
+
+https://emscripten.org/docs/getting_started/downloads.html
+
+```
+apt install cmake g++ build-essential
+apt install libboost-dev libsdl2-dev 
+```
+
+Visual studio 2022 using cmake is very easy to jump between windows sdl development and emscripten builds.
 
 # Emscripten + Embind
 
