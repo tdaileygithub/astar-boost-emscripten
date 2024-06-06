@@ -7,8 +7,5 @@ if (POLICY CMP0141)
 endif()
 
 project ("astar-boost")
-project ("add-sub")
 
 add_subdirectory ("astar-boost")
-
-add_subdirectory ("add-sub")
