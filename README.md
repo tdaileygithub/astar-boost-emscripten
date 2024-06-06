@@ -14,7 +14,7 @@ apt install libboost-dev libsdl2-dev
 
 Visual studio 2022 using cmake is very easy to jump between windows sdl development and emscripten builds.
 
-# astar maze solver with boost and sdl
+# astar maze solver with boost
 
 https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 
@@ -47,7 +47,7 @@ https://www.boost.org/doc/libs/1_70_0/libs/graph/example/astar_maze.cpp
 https://web.dev/articles/drawing-to-canvas-in-emscripten
 https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#built-in-type-conversions
 
-# Calling C++ Functions from Javascript + Reading a Byte Array from C++ in Javascript
+# Calling C++ Functions from JS and Reading Byte Array from C++ from JS
 
 ```c++
 constexpr size_t bufferLength = 1024;
